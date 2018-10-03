@@ -80,16 +80,25 @@
       rowWidth += itemAttrs[index].width;
       rowElems.push(items[index]);
 
-      // check if it is the last element
+      // check if it is the last row
       if(index === itemsSize - 1) {
         for(var rowElemIndex = 0; rowElemIndex<rowElems.length; rowElemIndex++) {
           // if first element in row
           if(rowElemIndex === 0) {
+            // Add last row class
             rowElems[rowElemIndex].className += ' ' + options.lastRowClass;
+            // Compute average row height
+            var prevRows = $(rowElems[rowElemIndex]).prevAll('.gallery-item-first');
+            for(var rowIndex = 0; rowIndex < prevRows.length; ++rowIndex) {
+              prevRowTotalHeight += parseInt($(prevRows[rowIndex]).css('height'));
+            }
+            var averageRowHeight = prevRowTotalHeight / prevRows.length;
           }
+          var lastIndex = index+parseInt(rowElemIndex)-rowElems.length+1;
+          var correctedWidth = averageRowHeight * itemAttrs[lastIndex].width / itemAttrs[lastIndex].height;
           rowElems[rowElemIndex].style.cssText =
-              'width: ' + itemAttrs[index+parseInt(rowElemIndex)-rowElems.length+1].width + 'px;' +
-              'height: ' + itemAttrs[index+parseInt(rowElemIndex)-rowElems.length+1].height + 'px;' +
+              'width: ' + Math.ceil(correctedWidth) + 'px;' +
+              'height: ' + Math.ceil(averageRowHeight) + 'px;' +
               'margin-right:' + ((rowElemIndex < rowElems.length - 1)?options.minMargin+'px' : 0);
         }
       }
