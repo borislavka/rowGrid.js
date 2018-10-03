@@ -88,6 +88,7 @@
             // Add last row class
             rowElems[rowElemIndex].className += ' ' + options.lastRowClass;
             // Compute average row height
+            var prevRowTotalHeight = 0;
             var prevRows = $(rowElems[rowElemIndex]).prevAll('.gallery-item-first');
             for(var rowIndex = 0; rowIndex < prevRows.length; ++rowIndex) {
               prevRowTotalHeight += parseInt($(prevRows[rowIndex]).css('height'));
